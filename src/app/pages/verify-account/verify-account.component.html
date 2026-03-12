@@ -1,0 +1,30 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <h1>LOCA<span>DRIVE</span></h1>
+      <p>Activez votre compte</p>
+    </div>
+
+    <div id="verify-error" class="alert-error" style="display:none"></div>
+    <div id="verify-success" class="alert-success" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Compte activé ! Redirection vers la connexion...
+    </div>
+
+    <form id="verify-form">
+      <div class="form-group">
+        <label>Nouveau mot de passe</label>
+        <input type="password" id="password" placeholder="Minimum 8 caractères" required />
+      </div>
+      <div class="form-group">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" id="confirm" placeholder="Répétez le mot de passe" required />
+      </div>
+      <button type="submit" class="btn-submit" id="verify-btn">Activer mon compte</button>
+    </form>
+
+    <div class="auth-links">
+      <a href="/login">← Retour à la connexion</a>
+    </div>
+  </div>
+</div>

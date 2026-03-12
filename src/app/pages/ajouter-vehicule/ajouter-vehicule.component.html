@@ -1,0 +1,139 @@
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>LOCA<span>DRIVE</span></h1>
+      <p>Administration</p>
+    <app-sidebar></app-sidebar>
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <span class="user-name">Admin</span>
+        <span class="user-status">En ligne</span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Déconnexion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <a href="/parc-liste" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div>
+          <h2>Ajouter un véhicule</h2>
+          <span>Enregistrer un nouveau véhicule dans le parc</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Formulaire -->
+    <div class="form-card">
+
+      <!-- Section : Identité -->
+      <div class="form-section">
+        <div class="section-title">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M3 17h18M5 17V9l2-4h10l2 4v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="7.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="16.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Identité du véhicule
+        </div>
+
+        <div class="form-grid">
+
+          <div class="field">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.5"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" stroke="currentColor" stroke-width="1.5"/></svg>
+              Marque
+            </label>
+            <div class="select-wrapper">
+              <select id="marque">
+                <option value="" disabled selected>Sélectionner une marque</option>
+                <option>Mercedes</option>
+                <option>BMW</option>
+                <option>Audi</option>
+                <option>Tesla</option>
+                <option>Renault</option>
+                <option>Dacia</option>
+                <option>Peugeot</option>
+                <option>Toyota</option>
+                <option>Volkswagen</option>
+                <option>Ford</option>
+                <option>Hyundai</option>
+                <option>Kia</option>
+                <option>Citroën</option>
+                <option>Seat</option>
+                <option>Opel</option>
+                <option>Autre</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h18" stroke="currentColor" stroke-width="1.5"/></svg>
+              Modèle
+            </label>
+            <input type="text" id="modele" placeholder="ex: Série 3, A4, Clio…"/>
+          </div>
+
+          <div class="field">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="20" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="13" r="1" fill="currentColor"/><circle cx="16" cy="13" r="1" fill="currentColor"/></svg>
+              Matricule / Immatriculation
+            </label>
+            <input type="text" id="matricule" placeholder="ex: 123-A-45" style="font-family: 'Courier New', monospace; letter-spacing: 2px; text-transform: uppercase;"/>
+          </div>
+
+          <div class="field">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Date de mise en circulation
+            </label>
+            <input type="date" id="dateCirculation" />
+          </div>
+
+          <div class="field">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Statut initial
+            </label>
+            <div class="select-wrapper">
+              <select id="statut">
+                <option value="disponible">Disponible</option>
+                <option value="maintenance">En maintenance</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="1.5"/><path d="M14 2v6h6M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Remarques (optionnel)
+            </label>
+            <textarea id="remarques" rows="3" placeholder="Couleur, options, état général…"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <a href="/parc-liste" class="btn-cancel">Annuler</a>
+        <button class="btn-submit" type="button">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Enregistrer le véhicule
+        </button>
+      </div>
+
+    </div>
+  </main>
+</div>

@@ -1,0 +1,183 @@
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>LOCA<span>DRIVE</span></h1>
+      <p>Administration</p>
+    <app-sidebar></app-sidebar>
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <span class="user-name">Admin</span>
+        <span class="user-status">En ligne</span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Déconnexion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <a href="/dashboard" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div>
+          <h2 class="topbar-title">Chiffre d'affaire</h2>
+          <p class="topbar-sub">Analyse financière de toutes les locations</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="sum-card green">
+          <div class="sum-icon">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="sum-body">
+            <span class="sum-label">CA Total</span>
+            <span class="sum-value" id="ca-total">—</span>
+          </div>
+        </div>
+        <div class="sum-card teal">
+          <div class="sum-icon">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="sum-body">
+            <span class="sum-label">Total payé</span>
+            <span class="sum-value" id="ca-paye">—</span>
+          </div>
+        </div>
+        <div class="sum-card amber">
+          <div class="sum-icon">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="sum-body">
+            <span class="sum-label">Reste à payer</span>
+            <span class="sum-value" id="ca-reste">—</span>
+          </div>
+        </div>
+        <div class="sum-card purple">
+          <div class="sum-icon">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="sum-body">
+            <span class="sum-label">Taux de recouvrement</span>
+            <span class="sum-value" id="ca-taux">—</span>
+            <div class="taux-bar-track">
+              <div class="taux-bar" id="ca-bar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Panel -->
+      <div class="table-panel">
+
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Détail des opérations
+          </div>
+          <span class="badge-count" id="ca-count">20 opérations</span>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-modes">
+            <span class="filter-label">Afficher :</span>
+            <div class="mode-group">
+              <button class="mode-btn active" id="mode-all"     onclick="caMode('all')">Tout</button>
+              <button class="mode-btn"        id="mode-month"   onclick="caMode('month')">
+                <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Par mois
+              </button>
+              <button class="mode-btn"        id="mode-voiture" onclick="caMode('voiture')">
+                <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M3 17h18M5 17V9l2-4h10l2 4v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+                Par voiture
+              </button>
+              <button class="mode-btn"        id="mode-client"  onclick="caMode('client')">
+                <svg viewBox="0 0 24 24" fill="none" width="13" height="13"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+                Par client
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-inputs">
+            <!-- Search (voiture / client) -->
+            <div class="search-field" id="ca-search-wrap" style="display:none">
+              <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input type="text" id="ca-search" placeholder="Rechercher..." oninput="caSearch(this.value)" />
+            </div>
+            <!-- Month picker -->
+            <div class="date-range" id="ca-month-wrap" style="display:none">
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input type="month" id="ca-month" onchange="caMonth()" />
+            </div>
+            <!-- Date range (always) -->
+            <div class="date-range">
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M8 2v4M16 2v4M3 9h18M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <input type="date" id="ca-from" onchange="caDates()" title="Depuis" />
+              <span class="date-sep">→</span>
+              <input type="date" id="ca-to"   onchange="caDates()" title="Jusqu'à" />
+            </div>
+            <button class="flt-reset" onclick="caReset()" title="Réinitialiser">
+              <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M21 3v5h-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8 16H3v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-scroller">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Marque</th>
+                <th>Matricule</th>
+                <th>Client</th>
+                <th>Départ</th>
+                <th>Retour</th>
+                <th>Jours</th>
+                <th>Total</th>
+                <th>Payé</th>
+                <th>Reste</th>
+                <th>Recouvrement</th>
+              </tr>
+            </thead>
+            <tbody id="ca-tbody">
+              <tr><td colspan="10" class="empty-row">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totals footer -->
+        <div class="totals-footer">
+          <div class="totals-label">Totaux filtrés</div>
+          <div class="totals-values">
+            <span class="tot-item">
+              <span class="tot-lbl">CA Total</span>
+              <span class="tot-val green" id="ca-total-foot">—</span>
+            </span>
+            <span class="tot-sep">|</span>
+            <span class="tot-item">
+              <span class="tot-lbl">Payé</span>
+              <span class="tot-val teal" id="ca-paye-foot">—</span>
+            </span>
+            <span class="tot-sep">|</span>
+            <span class="tot-item">
+              <span class="tot-lbl">Reste</span>
+              <span class="tot-val amber" id="ca-reste-foot">—</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>

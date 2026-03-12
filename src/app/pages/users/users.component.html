@@ -1,0 +1,94 @@
+<div class="users-wrapper">
+
+  <app-sidebar></app-sidebar>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <h2>Gestion des comptes</h2>
+      <button class="btn-create" onclick="usersOpenModal()">
+        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Nouveau compte
+      </button>
+    </header>
+
+    <div id="page-error" class="alert-error" style="display:none"></div>
+    <div id="toast" class="toast-success" style="display:none"></div>
+
+    <div class="table-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Statut</th>
+            <th>Créé par</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody">
+          <tr><td colspan="6" class="loading-row">Chargement...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Modal Créer compte -->
+  <div class="modal-overlay" id="create-modal" style="display:none">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Créer un nouveau compte</h3>
+        <button class="modal-close" onclick="usersCloseModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="create-error" class="alert-error" style="display:none"></div>
+        <div class="form-group">
+          <label>Nom d'utilisateur</label>
+          <input type="text" id="new-username" placeholder="ex: jdupont" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="new-email" placeholder="ex: jean@locadrive.ma" />
+        </div>
+        <div class="form-group">
+          <label>Rôle</label>
+          <select id="new-role">
+            <option value="" disabled selected>Choisir un rôle</option>
+            <option *ngIf="isAdmin" value="GERANT">Gérant</option>
+            <option value="AGENT">Agent</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn-cancel" onclick="usersCloseModal()">Annuler</button>
+        <button class="modal-btn-save" id="create-btn" onclick="usersCreate()">Créer le compte</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal lien d'activation -->
+  <div class="modal-overlay" id="link-modal" style="display:none">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>✅ Compte créé avec succès</h3>
+        <button class="modal-close" onclick="usersCloseLinkModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="link-info">Partagez ce lien d'activation avec l'utilisateur pour qu'il définisse son mot de passe :</p>
+        <div class="link-box">
+          <span id="activation-link-text" class="link-text"></span>
+          <button class="btn-copy" onclick="usersCopyLink()" title="Copier le lien">
+            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.5"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="link-note">⚠️ Ce lien ne s'affiche qu'une seule fois. Copiez-le maintenant.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn-save" onclick="usersCloseLinkModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,288 @@
+// ============================================================
+//  PARC — VÉHICULES
+// ============================================================
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background: #050d1a;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+// ============================================================
+//  SIDEBAR (identique aux autres pages)
+// ============================================================
+
+.sidebar {
+  position: fixed; top: 0; left: 0;
+  width: 240px; height: 100vh;
+  background: #080f20;
+  border-right: 1px solid rgba(0,245,255,0.08);
+  display: flex; flex-direction: column;
+  padding: 28px 16px;
+}
+
+.sidebar-brand {
+  padding: 0 8px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 24px;
+
+  h1 { font-size: 20px; font-weight: 800; letter-spacing: 3px; color: #fff; text-transform: uppercase;
+    span { background: linear-gradient(90deg, #00f5ff, #7b2fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  }
+  p { font-size: 10px; color: rgba(0,245,255,0.45); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+}
+
+.sidebar-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px; border-radius: 10px;
+  color: rgba(160,210,255,0.65); text-decoration: none;
+  font-size: 13px; font-weight: 500; transition: all 0.25s;
+  svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  &:hover { background: rgba(0,245,255,0.05); color: #fff; }
+  &.active { background: rgba(0,230,180,0.08); color: #00e6b4; border-left: 2px solid #00e6b4; }
+}
+
+.sidebar-footer {
+  display: flex; align-items: center; gap: 10px;
+  padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06);
+
+  .user-avatar { width: 34px; height: 34px; border-radius: 8px; background: linear-gradient(135deg, #00f5ff, #7b2fff); display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 13px; flex-shrink: 0; }
+  .user-details { flex: 1; display: flex; flex-direction: column;
+    .user-name { font-size: 13px; font-weight: 600; color: #fff; }
+    .user-status { font-size: 11px; color: #00ff88; }
+  }
+}
+
+.logout-btn {
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; background: rgba(255,60,60,0.07); border: none; padding: 0; cursor: pointer;
+  color: rgba(255,100,100,0.5); transition: all 0.25s;
+  svg { width: 16px; height: 16px; }
+  &:hover { background: rgba(255,60,60,0.15); color: #ff6464; }
+}
+
+// ============================================================
+//  MAIN
+// ============================================================
+
+.main-content {
+  margin-left: 240px;
+  flex: 1;
+  padding: 32px;
+}
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px; gap: 20px; flex-wrap: wrap;
+
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  h2 { font-size: 20px; font-weight: 700; color: #fff; }
+  span { display: block; font-size: 12px; color: rgba(0,245,255,0.45); margin-top: 3px; }
+}
+
+.back-btn {
+  width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+  border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+  color: rgba(160,210,255,0.65); text-decoration: none; transition: all 0.25s; flex-shrink: 0;
+  svg { width: 18px; height: 18px; }
+  &:hover { background: rgba(0,245,255,0.07); border-color: rgba(0,245,255,0.2); color: #00f5ff; }
+}
+
+// ---- Search bar ----
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: #080f20;
+  border: 1px solid rgba(0,245,255,0.1);
+  border-radius: 12px;
+  padding: 10px 16px;
+  min-width: 280px;
+
+  svg { width: 16px; height: 16px; color: rgba(0,245,255,0.4); flex-shrink: 0; }
+
+  input {
+    background: none; border: none; outline: none;
+    color: #fff; font-size: 13px; width: 100%;
+    font-family: inherit;
+    &::placeholder { color: rgba(0,245,255,0.3); }
+  }
+
+  &:focus-within { border-color: rgba(0,245,255,0.3); }
+}
+
+// ---- Add button ----
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0,230,180,0.15), rgba(0,245,255,0.1));
+  border: 1px solid rgba(0,230,180,0.35);
+  color: #00e6b4;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.25s;
+
+  svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(0,230,180,0.25), rgba(0,245,255,0.15));
+    border-color: rgba(0,230,180,0.6);
+    box-shadow: 0 0 20px rgba(0,230,180,0.15);
+    color: #fff;
+  }
+}
+
+// ============================================================
+//  FILTER TABS
+// ============================================================
+
+.filter-tabs {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 24px; flex-wrap: wrap;
+}
+
+.filter-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: rgba(160,210,255,0.6);
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+
+  i.dot {
+    display: block; width: 7px; height: 7px; border-radius: 50%;
+    &.available   { background: #e8d4a8; }
+    &.rented      { background: #009fff; }
+    &.maint       { background: rgba(160,210,255,0.4); }
+  }
+
+  .count {
+    background: rgba(0,245,255,0.12);
+    color: #00f5ff;
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    margin-left: 2px;
+  }
+
+  &:hover { background: rgba(0,245,255,0.05); color: #fff; border-color: rgba(0,245,255,0.2); }
+
+  &.active { color: #fff; border-color: rgba(0,245,255,0.4); background: rgba(0,245,255,0.08); }
+  &.active.available { border-color: rgba(232,212,168,0.4); background: rgba(232,212,168,0.07); color: #e8d4a8; }
+  &.active.rented    { border-color: rgba(0,150,255,0.4);   background: rgba(0,150,255,0.07);   color: #009fff; }
+  &.active.maint     { border-color: rgba(160,210,255,0.3); background: rgba(160,210,255,0.05); color: rgba(160,210,255,0.8); }
+}
+
+// ============================================================
+//  GRILLE DE CARTES
+// ============================================================
+
+.parc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.parc-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px;
+  color: rgba(0,245,255,0.4);
+  font-size: 14px;
+}
+
+// ============================================================
+//  CARTE VÉHICULE
+// ============================================================
+
+.car-card {
+  background: #080f20;
+  border: 1px solid rgba(0,245,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.25s;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0,245,255,0.2);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  }
+}
+
+.car-photo {
+  position: relative;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+
+  .car-svg {
+    width: 80%;
+    max-width: 160px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  }
+
+  .car-brand-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid;
+  }
+}
+
+.car-info {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .car-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .car-plate-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(0,245,255,0.8);
+    background: rgba(0,245,255,0.06);
+    border: 1px solid rgba(0,245,255,0.15);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-family: 'Courier New', monospace;
+    width: fit-content;
+  }
+}
+
+// ---- Badges statut ----
+.badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+  padding: 4px 12px; border-radius: 20px; white-space: nowrap;
+  width: fit-content;
+
+  &.available   { background: rgba(232,212,168,0.10); color: #e8d4a8; border: 1px solid rgba(232,212,168,0.25); }
+  &.rented      { background: rgba(0,150,255,0.10);   color: #009fff; border: 1px solid rgba(0,150,255,0.25);   }
+  &.maintenance { background: rgba(160,210,255,0.05); color: rgba(160,210,255,0.7); border: 1px solid rgba(160,210,255,0.15); }
+}
+
+.car-actions{padding:0 12px 12px;}
+.btn-delete-car{display:flex;align-items:center;gap:6px;width:100%;padding:7px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#f87171;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;justify-content:center;}
+.btn-delete-car:hover{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);color:#fca5a5;}

@@ -1,0 +1,238 @@
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>LOCA<span>DRIVE</span></h1>
+      <p>Administration</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/dashboard" class="nav-item">Tableau de bord</a>
+      <a href="/saisir-operation" class="nav-item">Saisir une opération</a>
+      <a href="/operations" class="nav-item">Les Opérations</a>
+      <a href="/maintenance" class="nav-item">Maintenance</a>
+      <a href="/chiffre-affaire" class="nav-item">Chiffre d'affaire</a>
+      <a href="/factures" class="nav-item">Factures</a>
+      <a href="/disponibilite" class="nav-item">Disponibilité</a>
+      <a href="/parc" class="nav-item">Parc</a>
+      <a href="/assurance-hub" class="nav-item">Assurance / Vignette</a>
+      <a href="/users" class="nav-item users-nav-link">Gestion des comptes</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <span class="user-name">Admin</span>
+        <span class="user-status">En ligne</span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Déconnexion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <a href="/parc" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div>
+          <h2 class="topbar-title">Visite Technique</h2>
+          <p class="topbar-sub">Contrôle et alertes de visite technique</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- Notification Panel -->
+      <div class="notif-panel">
+        <div class="notif-header">
+          <div class="notif-title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="12" y1="9" x2="12" y2="13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+            </svg>
+            Visites imminentes (moins de 10 jours)
+          </div>
+          <span class="notif-badge" id="vt-notif-badge">0</span>
+        </div>
+        <div class="notif-list" id="vt-notif-container">
+          <p class="no-notif">Chargement...</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label for="filter-month">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Mois
+          </label>
+          <input type="month" id="filter-month" onchange="vtApplyFilter()" />
+        </div>
+        <div class="filter-group">
+          <label for="filter-vehicule">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M3 17h18M5 17V9l2-4h10l2 4v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="16.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+            Véhicule
+          </label>
+          <select id="filter-vehicule" onchange="vtApplyFilter()">
+            <option value="">— Tous les véhicules —</option>
+          </select>
+        </div>
+        <button class="btn-reset-filter" onclick="vtResetFilter()">
+          <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.36 2.64L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 3v5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Réinitialiser
+        </button>
+      </div>
+
+      <!-- Total Montant Banner -->
+      <div class="total-banner" id="vt-total">
+        <div class="total-icon">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="total-body">
+          <span class="total-label">Total des dépenses</span>
+          <span class="total-amount">0,00 <span class="total-currency">DH</span></span>
+        </div>
+        <span class="total-count">0 visite</span>
+      </div>
+
+      <!-- Table -->
+      <div class="table-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Calendrier de visites techniques
+          </div>
+          <div class="panel-header-right">
+            <span class="badge-count" id="vt-count-badge">0 visite(s)</span>
+            <button class="btn-add-vt" onclick="vtAddOpen()">
+              <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Ajouter
+            </button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Marque</th>
+                <th>Modèle</th>
+                <th>Matricule</th>
+                <th>Date visite effectuée</th>
+                <th>Date prochaine visite</th>
+                <th>Montant (DH)</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vt-tbody">
+              <tr><td colspan="8" class="loading-row">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── Modal Ajouter ─── -->
+  <div class="modal-overlay" id="vt-add-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Nouvelle visite technique
+        </div>
+        <button class="modal-close" onclick="vtAddClose()">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="modal-body modal-form">
+        <div class="modal-field">
+          <label>Véhicule</label>
+          <select id="add-vehiculeId">
+            <option value="">-- Sélectionner un véhicule --</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Date de la visite effectuée <span class="required">*</span></label>
+          <input type="date" id="add-date-visite" />
+        </div>
+        <div class="modal-field">
+          <label>Date de prochaine visite <span class="required">*</span></label>
+          <input type="date" id="add-date" />
+        </div>
+        <div class="modal-field">
+          <label>Montant (DH)</label>
+          <input type="number" id="add-montant" placeholder="0.00" min="0" step="0.01" />
+        </div>
+        <div class="modal-error" id="add-error" style="display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn-cancel" onclick="vtAddClose()">Annuler</button>
+        <button class="modal-btn-save" onclick="vtAddSave()">
+          <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="17 21 17 13 7 13 7 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="7 3 7 8 15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Modal Modifier ─── -->
+  <div class="modal-overlay" id="vt-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Modifier la visite technique
+        </div>
+        <button class="modal-close" onclick="closeVTModal()">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body modal-form">
+        <div class="modal-field">
+          <label>Véhicule</label>
+          <select id="edit-vehiculeId">
+            <option value="">-- Sélectionner un véhicule --</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Date de la visite effectuée</label>
+          <input type="date" id="edit-date-visite" />
+        </div>
+        <div class="modal-field">
+          <label>Date de prochaine visite</label>
+          <input type="date" id="vt-modal-date" />
+        </div>
+        <div class="modal-field">
+          <label>Montant (DH)</label>
+          <input type="number" id="vt-modal-montant" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-btn-cancel" onclick="closeVTModal()">Annuler</button>
+        <button class="modal-btn-save" onclick="saveVTModal()">
+          <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="17 21 17 13 7 13 7 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="7 3 7 8 15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-success" id="vt-toast">
+    <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="vt-toast-msg">Opération réussie</span>
+  </div>
+
+</div>

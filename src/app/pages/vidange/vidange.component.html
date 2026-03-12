@@ -1,0 +1,126 @@
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>LOCA<span>DRIVE</span></h1>
+      <p>Administration</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="/dashboard" class="nav-item">Tableau de bord</a>
+      <a href="/saisir-operation" class="nav-item">Saisir une opération</a>
+      <a href="/operations" class="nav-item">Les Opérations</a>
+      <a href="/maintenance" class="nav-item">Maintenance</a>
+      <a href="/chiffre-affaire" class="nav-item">Chiffre d'affaire</a>
+      <a href="/factures" class="nav-item">Factures</a>
+      <a href="/disponibilite" class="nav-item">Disponibilité</a>
+      <a href="/parc" class="nav-item">Parc</a>
+      <a href="/assurance-hub" class="nav-item">Assurance / Vignette</a>
+      <a href="/users" class="nav-item users-nav-link">Gestion des comptes</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-avatar">A</div>
+      <div class="user-details">
+        <span class="user-name">Admin</span>
+        <span class="user-status">En ligne</span>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Déconnexion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-left">
+        <a href="/parc" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div>
+          <h2 class="topbar-title">Vidange</h2>
+          <p class="topbar-sub">Suivi des vidanges d'huile du parc</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-area">
+      <div class="table-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 16.5c0 2.485 2.239 4.5 5 4.5s5-2.015 5-4.5c0-3.5-5-9-5-9s-5 5.5-5 9z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 7.5V3M9.5 5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Liste des vidanges
+          </div>
+          <span class="badge-count">15 véhicules</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Véhicule</th>
+                <th>Matricule</th>
+                <th>Date dernière vidange</th>
+                <th>KM prochaine vidange</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="vidange-tbody">
+              <tr><td colspan="5" class="loading-row">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Modifier Vidange -->
+  <div class="modal-overlay" id="vidange-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Modifier la vidange
+        </div>
+        <button class="modal-close" onclick="closeVidangeModal()">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-vehicle-info">
+        <span class="modal-nom" id="modal-nom"></span>
+        <span class="plate" id="modal-plate"></span>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Date de la nouvelle vidange</label>
+          <input type="date" id="modal-date" />
+        </div>
+        <div class="modal-field">
+          <label>Kilométrage de la prochaine vidange</label>
+          <div class="input-km-wrap">
+            <input type="number" id="modal-km" placeholder="ex: 90000" min="0" />
+            <span class="km-unit">km</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="modal-btn-cancel" onclick="closeVidangeModal()">Annuler</button>
+        <button class="modal-btn-save" onclick="saveVidangeModal()">
+          <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="17 21 17 13 7 13 7 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="7 3 7 8 15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast confirmation -->
+  <div class="toast-success" id="vidange-toast">
+    <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><polyline points="22 4 12 14.01 9 11.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Vidange mise à jour avec succès
+  </div>
+
+</div>

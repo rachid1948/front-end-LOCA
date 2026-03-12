@@ -1,0 +1,180 @@
+/* Sidebar styles for <app-sidebar> */
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 240px;
+  height: 100vh;
+  background: #080f20;
+  border-right: 1px solid rgba(0, 245, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 16px;
+}
+
+.sidebar-brand {
+  padding: 0 8px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  margin-bottom: 24px;
+}
+
+.sidebar-brand h1 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.sidebar-brand h1 span {
+  background: linear-gradient(90deg, #00f5ff, #7b2fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sidebar-brand p {
+  font-size: 10px;
+  color: rgba(0, 245, 255, 0.45);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 24px 0 0 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #b6c2e2;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-item svg {
+  width: 22px;
+  height: 22px;
+  color: #00f5ff;
+}
+
+.nav-item.active, .nav-item:hover {
+  background: linear-gradient(90deg, #00f5ff22, #7b2fff22);
+  color: #fff;
+}
+
+// ...existing code...
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-left: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: filter 0.2s;
+}
+
+.logout-btn svg {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.logout-btn:focus {
+  outline: none;
+  filter: brightness(1.2);
+}
+  /* supprimé doublon, déjà dans .sidebar-footer */
+
+
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px 0 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f5ff, #7b2fff);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 0 0 8px #00f5ff44, 0 0 0 2px #7b2fff44;
+  transition: background 0.3s;
+}
+.avatar-admin {
+  background: linear-gradient(135deg, #7b2fff, #00f5ff);
+  box-shadow: 0 0 12px #7b2fff88, 0 0 0 2px #00f5ff44;
+}
+.avatar-gerant {
+  background: linear-gradient(135deg, #ffb300, #7b2fff);
+  box-shadow: 0 0 12px #ffb30088, 0 0 0 2px #7b2fff44;
+}
+.avatar-agent {
+  background: linear-gradient(135deg, #00f5ff, #00e676);
+  box-shadow: 0 0 12px #00e67688, 0 0 0 2px #00f5ff44;
+}
+
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: #b6c2e2;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #fff;
+}
+
+.user-status {
+  font-size: 11px;
+  color: #00f5ff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f5ff, #7b2fff);
+  box-shadow: 0 0 6px #00f5ff88;
+  display: inline-block;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.logout-btn:hover {
+  background: rgba(123,47,255,0.08);
+  box-shadow: 0 0 8px #7b2fff44;
+}

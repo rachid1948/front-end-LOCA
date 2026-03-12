@@ -1,0 +1,97 @@
+<div class="page-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <app-sidebar></app-sidebar>
+  </aside>
+  <header>
+    <div>
+      <h2>Disponibilité du Parc</h2>
+      <span>État en temps réel de votre flotte</span>
+    </div>
+  </header>
+
+    <div class="content-grid">
+
+      <!-- Ligne du haut : Notifications + Recherche côte à côte -->
+      <div class="top-panels">
+
+        <!-- Notifications ≤ 2 jours -->
+        <div class="panel notif-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              Bientôt disponibles
+            </div>
+            <span class="badge-count" id="notif-badge">0</span>
+          </div>
+          <div id="notif-container">
+            <div class="notif-empty">Chargement...</div>
+          </div>
+        </div>
+
+        <!-- Recherche par date -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              Disponibles à une date
+            </div>
+          </div>
+          <div class="search-date-field">
+            <label>Choisir une date</label>
+            <input type="date" id="searchDate"/>
+          </div>
+          <div id="search-empty" class="search-hint">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Sélectionnez une date pour voir les voitures disponibles.
+          </div>
+          <div id="search-results" class="search-results"></div>
+        </div>
+
+      </div>
+
+      <!-- Tableau pleine largeur -->
+      <div class="panel fleet-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M3 17h18M5 17V9l2-4h10l2 4v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="7.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="16.5" cy="17" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            Toutes les voitures du parc
+          </div>
+          <div class="filter-tabs">
+            <button class="filter-btn active" id="filter-all"         onclick="filterFleet('all')">Tous</button>
+            <button class="filter-btn available" id="filter-available" onclick="filterFleet('available')"><i class="available"></i>Disponible</button>
+            <button class="filter-btn soon"      id="filter-soon"      onclick="filterFleet('soon')"><i class="soon"></i>≤ 2 jours</button>
+            <button class="filter-btn rented"    id="filter-rented"    onclick="filterFleet('rented')"><i class="rented"></i>Louée</button>
+            <button class="filter-btn maint"     id="filter-maint"     onclick="filterFleet('maintenance')"><i class="maintenance"></i>Maintenance</button>
+          </div>
+        </div>
+        <table class="cars-table">
+          <thead>
+            <tr>
+              <th>Véhicule</th>
+              <th>Retour prévu</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-all"></tbody>
+        </table>
+      </div>
+
+    </div>
+  <!-- Fin main -->
+
+</div>

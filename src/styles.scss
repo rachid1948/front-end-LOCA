@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #020818;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ══ RBAC visibility rules ══════════════════════════════════════════════════ */
+
+/* AGENT: cannot see Statistiques nav link or dashboard card */
+body.role-AGENT .stat-nav-link,
+body.role-AGENT .stat-module-card {
+  display: none !important;
+}
+
+/* AGENT: cannot edit or delete operations */
+body.role-AGENT .btn-edit,
+body.role-AGENT .btn-del,
+body.role-AGENT .ops-action-col {
+  display: none !important;
+}
+
+/* GERANT + AGENT: cannot add vehicles */
+body.role-GERANT .add-vehicle-btn,
+body.role-AGENT  .add-vehicle-btn {
+  display: none !important;
+}
+
+/* AGENT: cannot access user management */
+body.role-AGENT .users-nav-link {
+  display: none !important;
+}
