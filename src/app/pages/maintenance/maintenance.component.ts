@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../../shared/sidebar.component';
 import { MaintenanceService } from '../../core/services/maintenance.service';
 import { VehiculeService } from '../../core/services/vehicule.service';
 
@@ -20,7 +21,7 @@ interface MaintenanceRecord {
 @Component({
   selector: 'app-maintenance',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './maintenance.component.html',
   styleUrl: './maintenance.component.scss',
   encapsulation: ViewEncapsulation.None

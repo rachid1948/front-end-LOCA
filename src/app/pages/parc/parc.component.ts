@@ -1,4 +1,5 @@
 import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { SidebarComponent } from '../../shared/sidebar.component';
 import { VehiculeService } from '../../core/services/vehicule.service';
 
 const BRAND_COLORS: Record<string, string> = {
@@ -21,7 +22,7 @@ function getBrandBadge(marque: string): string {
 @Component({
   selector: 'app-parc',
   standalone: true,
-  imports: [],
+  imports: [SidebarComponent],
   templateUrl: './parc.component.html',
   styleUrl: './parc.component.scss',
   encapsulation: ViewEncapsulation.None

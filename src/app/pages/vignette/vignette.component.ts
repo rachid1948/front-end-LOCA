@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../../shared/sidebar.component';
 import { VignetteService } from '../../core/services/vignette.service';
 import { VehiculeService } from '../../core/services/vehicule.service';
 
@@ -16,7 +17,7 @@ interface VignetteRecord {
 @Component({
   selector: 'app-vignette',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './vignette.component.html',
   styleUrl: './vignette.component.scss',
   encapsulation: ViewEncapsulation.None

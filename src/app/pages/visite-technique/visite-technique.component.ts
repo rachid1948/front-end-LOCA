@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../../shared/sidebar.component';
 import { VisiteTechniqueService } from '../../core/services/visite-technique.service';
 import { VehiculeService } from '../../core/services/vehicule.service';
 
@@ -20,7 +21,7 @@ interface VisiteEntry {
 @Component({
   selector: 'app-visite-technique',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './visite-technique.component.html',
   styleUrls: ['./visite-technique.component.scss'],
   encapsulation: ViewEncapsulation.None

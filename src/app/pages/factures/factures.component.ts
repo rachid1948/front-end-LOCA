@@ -2,7 +2,7 @@ import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FactureService } from '../../core/services/facture.service';
 import { VehiculeService } from '../../core/services/vehicule.service';
-
+import { SidebarComponent } from '../../shared/sidebar.component';
 interface SavedInvoice {
   id?: number;
   numero: string;
@@ -22,7 +22,7 @@ interface SavedInvoice {
 @Component({
   selector: 'app-factures',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SidebarComponent],
   templateUrl: './factures.component.html',
   styleUrl: './factures.component.scss',
   encapsulation: ViewEncapsulation.None

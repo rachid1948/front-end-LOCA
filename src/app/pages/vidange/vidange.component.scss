@@ -8,57 +8,8 @@
 }
 
 /* ── Sidebar ── */
-.sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: #080f20;
-  border-right: 1px solid rgba(0,245,255,0.07);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.sidebar-brand {
-  padding: 28px 20px 20px;
-  border-bottom: 1px solid rgba(0,245,255,0.07);
-  h1 { font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: 2px; span { color: #00e6b4; } }
-  p { font-size: 0.72rem; color: rgba(0,245,255,0.45); margin-top: 2px; letter-spacing: 1px; }
-}
-
-.sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
-
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 12px; border-radius: 8px;
-  color: rgba(160,210,255,0.65); text-decoration: none;
-  font-size: 0.87rem; font-weight: 500; transition: all 0.2s;
-  svg { width: 18px; height: 18px; flex-shrink: 0; }
-  &:hover { background: rgba(0,245,255,0.06); color: #fff; }
-  &.active { background: rgba(0,230,180,0.1); color: #00e6b4; border-left: 3px solid #00e6b4; padding-left: 9px; }
-}
-
-.sidebar-footer {
-  padding: 16px 12px; border-top: 1px solid rgba(0,245,255,0.07);
-  display: flex; align-items: center; gap: 10px;
-}
-
-.user-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, #00f5ff, #7b2fff);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 0.9rem; color: #fff; flex-shrink: 0;
-}
-
-.user-details {
-  flex: 1; display: flex; flex-direction: column;
-  .user-name { font-size: 0.85rem; color: #fff; font-weight: 600; }
-  .user-status { font-size: 0.72rem; color: #00e6b4; }
-}
-
-.logout-btn { background: none; border: none; padding: 0; cursor: pointer; color: rgba(160,210,255,0.5); display: flex; align-items: center; svg { width: 18px; height: 18px; } &:hover { color: #ff4d6d; } }
-
 /* ── Main ── */
-.main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+.main-content { margin-left: 240px; flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
 
 .topbar {
   padding: 20px 32px;
