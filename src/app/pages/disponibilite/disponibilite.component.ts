@@ -125,7 +125,12 @@ export class DisponibiliteComponent implements AfterViewInit {
 
     // Appliquer le filtre
     if (filter !== 'all') {
-      list = list.filter(v => this.statutClass(v) === filter);
+      // Le filtre 'rented' inclut aussi 'soon' (retour ≤ 7 jours)
+      if (filter === 'rented') {
+        list = list.filter(v => this.statutClass(v) === 'rented' || this.statutClass(v) === 'soon');
+      } else {
+        list = list.filter(v => this.statutClass(v) === filter);
+      }
     }
 
     // Tri : disponibles en premier, puis par date de retour croissante
@@ -198,7 +203,7 @@ export class DisponibiliteComponent implements AfterViewInit {
     const bientot = this.voitures
       .filter(v => {
         if (v.statut === 'disponible' || !v.retourLe) return false;
-        return this.joursRestants(v.retourLe) <= 2 && this.joursRestants(v.retourLe) >= 0;
+        return this.joursRestants(v.retourLe) <= 7 && this.joursRestants(v.retourLe) >= 0;
       })
       .sort((a, b) => a.retourLe!.getTime() - b.retourLe!.getTime());
 
@@ -206,7 +211,7 @@ export class DisponibiliteComponent implements AfterViewInit {
     if (badge) badge.textContent = bientot.length.toString();
 
     if (bientot.length === 0) {
-      container.innerHTML = `<div class="notif-empty">Aucune voiture disponible dans les prochaines 48h.</div>`;
+      container.innerHTML = `<div class="notif-empty">Aucune voiture ne rentre dans les 7 prochains jours.</div>`;
       return;
     }
 
