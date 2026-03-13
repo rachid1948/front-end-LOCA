@@ -13,4 +13,5 @@ export class OperationService {
   update(id: number, op: any): Observable<any> { return this.http.put<any>(`${this.BASE}/${id}`, op); }
   delete(id: number): Observable<any> { return this.http.delete(`${this.BASE}/${id}`); }
   updateStatut(id: number, statut: string): Observable<any> { return this.http.patch(`${this.BASE}/${id}/statut`, { statut }); }
+  cloture(id: number, dateRetour: string): Observable<any> { return this.http.patch<any>(`${this.BASE}/${id}/cloture`, { dateRetour }); }
 }

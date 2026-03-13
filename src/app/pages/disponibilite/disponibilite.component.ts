@@ -86,6 +86,7 @@ export class DisponibiliteComponent implements AfterViewInit {
   statutLabel(v: any): string {
     if (v.statut === 'disponible') return 'Disponible';
     if (v.statut === 'maintenance') return 'Maintenance';
+    if (!v.retourLe) return 'Retour ouvert';
     const jours = this.joursRestants(v.retourLe);
     return `Retour dans ${jours}j`;
   }

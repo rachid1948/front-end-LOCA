@@ -164,6 +164,17 @@
 }
 
 // ---- Récap ----
+.retour-inconnu-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(160, 210, 255, 0.7);
+  cursor: pointer;
+  input[type=checkbox] { accent-color: #00f5ff; cursor: pointer; }
+}
+
 .recap {
   display: flex;
   align-items: center;

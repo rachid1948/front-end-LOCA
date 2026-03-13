@@ -54,10 +54,13 @@ export class OperationsComponent implements AfterViewInit {
   }
 
   private mapFromBackend(op: any): Operation {
-    const total = op.prixTTC || 0;
+    const total  = op.prixTTC || 0;
     const avance = Number(op.avance ?? 0);
-    const paye = op.statut === 'PAYE' ? total : avance;
-    const jours = op.jours || 1;
+    const paye   = op.statut === 'PAYE' ? total : avance;
+    const jours  = op.jours || 0;
+    const prixJour = op.prixJour
+      ? Number(op.prixJour)
+      : (jours > 0 ? Math.round(total / jours) : 0);
     return {
       id: op.id,
       vehiculeId: op.vehiculeId,
@@ -65,9 +68,9 @@ export class OperationsComponent implements AfterViewInit {
       matricule: op.matricule || '',
       client: op.client || '',
       dateAller: this.isoToFr(op.dateDepart),
-      dateRetour: this.isoToFr(op.dateRetour),
+      dateRetour: op.dateRetour ? this.isoToFr(op.dateRetour) : '',  // vide = location ouverte
       jours,
-      prixJour: Math.round(total / jours),
+      prixJour,
       total,
       avance,
       paye,
@@ -138,32 +141,42 @@ export class OperationsComponent implements AfterViewInit {
     }
     const todayMidnight = new Date(); todayMidnight.setHours(0,0,0,0);
     tbody.innerHTML = items.map(({ op, idx }) => {
-      const reste = op.total - op.paye;
-      const isPaid = reste <= 0;
-      const payeClass = isPaid ? 'badge-paid' : 'badge-unpaid';
-      const payeLabel = isPaid ? '✓ Payé' : 'Partiel';
-      // Days coloring
-      const [dd, mm, yyyy] = op.dateRetour.split('/');
-      const retourDate = new Date(`${yyyy}-${mm}-${dd}`); retourDate.setHours(0,0,0,0);
-      const diffDays = Math.round((retourDate.getTime() - todayMidnight.getTime()) / 86_400_000);
-      const joursClass = diffDays >= 0 ? 'jours-green' : 'jours-red';
+      const isOpen  = op.statut === 'EN_COURS';
+      const reste   = isOpen ? 0 : (op.total - op.paye);
+      const isPaid  = !isOpen && reste <= 0;
+      const payeClass = isOpen ? 'badge-open' : (isPaid ? 'badge-paid' : 'badge-unpaid');
+      const payeLabel = isOpen ? '⏳ En cours' : (isPaid ? '✓ Payé' : 'Partiel');
+      // Days coloring (uniquement si date retour connue)
+      let joursCell = '—';
+      if (!isOpen && op.dateRetour) {
+        const [dd, mm, yyyy] = op.dateRetour.split('/');
+        const retourDate = new Date(`${yyyy}-${mm}-${dd}`); retourDate.setHours(0,0,0,0);
+        const diffDays = Math.round((retourDate.getTime() - todayMidnight.getTime()) / 86_400_000);
+        const joursClass = diffDays >= 0 ? 'jours-green' : 'jours-red';
+        joursCell = `<span class="${joursClass}">${op.jours}j</span>`;
+      } else if (isOpen) {
+        joursCell = `<span class="jours-open">?</span>`;
+      }
       return `
-        <tr>
+        <tr class="${isOpen ? 'row-open' : ''}">
           <td class="marque-cell">${op.marque}</td>
           <td><span class="plate">${op.matricule}</span></td>
           <td class="client-cell">${op.client}</td>
           <td class="date-cell">${op.dateAller}</td>
-          <td class="date-cell">${op.dateRetour}</td>
-          <td class="num-cell"><span class="${joursClass}">${op.jours}j</span></td>
+          <td class="date-cell">${isOpen ? '<span class="retour-ouvert">Retour ouvert</span>' : op.dateRetour}</td>
+          <td class="num-cell">${joursCell}</td>
           <td class="num-cell">${op.prixJour.toLocaleString('fr-FR')} DH</td>
-          <td class="total-cell">${op.total.toLocaleString('fr-FR')} DH</td>
+          <td class="total-cell">${isOpen ? '—' : op.total.toLocaleString('fr-FR') + ' DH'}</td>
           <td class="avance-cell">${op.avance > 0 ? op.avance.toLocaleString('fr-FR') + ' DH' : '—'}</td>
           <td><span class="${payeClass}">${payeLabel}</span></td>
-          <td class="${isPaid ? 'reste-zero' : 'reste-cell'}">${reste > 0 ? reste.toLocaleString('fr-FR') + ' DH' : '—'}</td>
+          <td class="${isPaid ? 'reste-zero' : 'reste-cell'}">${isOpen ? '—' : (reste > 0 ? reste.toLocaleString('fr-FR') + ' DH' : '—')}</td>
           <td class="actions-cell">
-            <button class="btn-edit" onclick="opsEdit(${idx})" title="Modifier">
+            ${isOpen ? `<button class="btn-cloture" onclick="opsCloture(${idx})" title="Clôturer la location">
+              <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/></svg>
+              Clôturer
+            </button>` : `<button class="btn-edit" onclick="opsEdit(${idx})" title="Modifier">
               <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
+            </button>`}
             <button class="btn-del" onclick="opsDel(${idx})" title="Supprimer">
               <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9 6V4h6v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
@@ -191,6 +204,42 @@ export class OperationsComponent implements AfterViewInit {
     const info = `<span class="page-info">Page ${this.currentPage} / ${this.totalPages} — ${this.filtered.length} opération${this.filtered.length > 1 ? 's' : ''}</span>`;
 
     container.innerHTML = prev + pages + next + info;
+  }
+
+  clotureOp(globalIdx: number) {
+    const op = this.operations[globalIdx];
+    if (!op) return;
+    this.editingIndex = globalIdx;
+    // Pré-remplir la date d'aujourd'hui
+    const today = new Date().toISOString().split('T')[0];
+    (document.getElementById('cl-dateRetour') as HTMLInputElement).value = today;
+    // Afficher l'info
+    const info = document.getElementById('cl-info');
+    if (info) info.textContent = `${op.client} — ${op.marque} (${op.matricule}) — départ le ${op.dateAller} — ${op.prixJour.toLocaleString('fr-FR')} DH/j`;
+    document.getElementById('ops-cloture-modal')?.classList.add('open');
+  }
+
+  saveCloture() {
+    if (this.editingIndex < 0) return;
+    const op = this.operations[this.editingIndex];
+    if (!op) return;
+    const dateRetour = (document.getElementById('cl-dateRetour') as HTMLInputElement).value;
+    if (!dateRetour) { this.showToast('Veuillez saisir la date de retour.'); return; }
+
+    this.operationService.cloture(op.id, dateRetour).subscribe({
+      next: (updated) => {
+        this.operations[this.editingIndex] = this.mapFromBackend(updated);
+        this.closeClotureModal();
+        this.renderTable();
+        this.showToast('Location clôturée avec succès !');
+      },
+      error: (err) => this.showToast(err.error?.message || 'Erreur lors de la clôture.')
+    });
+  }
+
+  closeClotureModal() {
+    document.getElementById('ops-cloture-modal')?.classList.remove('open');
+    this.editingIndex = -1;
   }
 
   openEditModal(globalIdx: number) {
@@ -227,11 +276,11 @@ export class OperationsComponent implements AfterViewInit {
     const client        = (document.getElementById('ed-client') as HTMLInputElement).value;
 
     const d1 = new Date(dateAllerISO), d2 = new Date(dateRetourISO);
-    const jours  = Math.max(1, Math.ceil((d2.getTime() - d1.getTime()) / 86400000));
-    const prixTTC = jours * prixJour;
-    const statut  = paye >= prixTTC ? 'PAYE' : 'IMPAYE';
+    const jours   = Math.max(1, Math.ceil((d2.getTime() - d1.getTime()) / 86400000));
+    const prixTTC  = jours * prixJour;
+    const statut   = paye >= prixTTC ? 'PAYE' : 'IMPAYE';
 
-    const body = { client, vehiculeId: op.vehiculeId, dateDepart: dateAllerISO, dateRetour: dateRetourISO, prixTTC, avance: paye, statut };
+    const body = { client, vehiculeId: op.vehiculeId, dateDepart: dateAllerISO, dateRetour: dateRetourISO, prixJour, avance: paye, statut };
 
     this.operationService.update(op.id, body).subscribe({
       next: () => {
@@ -288,11 +337,14 @@ export class OperationsComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    (window as any)['opsEdit'] = (i: number) => this.openEditModal(i);
-    (window as any)['opsDel'] = (i: number) => this.deleteOp(i);
-    (window as any)['opsPage'] = (p: number) => { this.currentPage = p; this.renderTable(); };
-    (window as any)['opsSave'] = () => this.saveEdit();
-    (window as any)['opsClose'] = () => this.closeModal();
+    (window as any)['opsEdit']    = (i: number) => this.openEditModal(i);
+    (window as any)['opsDel']     = (i: number) => this.deleteOp(i);
+    (window as any)['opsCloture'] = (i: number) => this.clotureOp(i);
+    (window as any)['opsPage']    = (p: number) => { this.currentPage = p; this.renderTable(); };
+    (window as any)['opsSave']    = () => this.saveEdit();
+    (window as any)['opsClose']   = () => this.closeModal();
+    (window as any)['opsSaveCloture']  = () => this.saveCloture();
+    (window as any)['opsCloseCloture'] = () => this.closeClotureModal();
     (window as any)['opsFilter'] = (s: string) => { this.filterStatus = s as any; this.applyFilters(); };
     (window as any)['opsSearch'] = (v: string) => { this.searchText = v; this.applyFilters(); };
     (window as any)['opsDates'] = () => {

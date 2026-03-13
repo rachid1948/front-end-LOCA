@@ -352,8 +352,33 @@
   white-space: nowrap;
 }
 
+.badge-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,245,255,0.1);
+  color: #00f5ff;
+  border: 1px solid rgba(0,245,255,0.25);
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
 .jours-green { color: #00e6b4; font-weight: 700; }
 .jours-red   { color: #ff4d6d; font-weight: 700; }
+.jours-open  { color: #00f5ff; font-weight: 700; }
+
+.retour-ouvert {
+  color: rgba(0,245,255,0.6);
+  font-style: italic;
+  font-size: 12px;
+}
+
+.row-open td {
+  background: rgba(0,245,255,0.02);
+}
 
 /* ─── Action Buttons ─── */
 .actions-cell {
@@ -392,6 +417,23 @@
   cursor: pointer;
   transition: all 0.2s;
   &:hover { background: rgba(255,77,109,0.15); border-color: rgba(255,77,109,0.4); }
+}
+
+.btn-cloture {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 7px;
+  border: 1px solid rgba(0,245,255,0.3);
+  background: rgba(0,245,255,0.08);
+  color: #00f5ff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  &:hover { background: rgba(0,245,255,0.15); border-color: rgba(0,245,255,0.5); }
 }
 
 /* ─── Pagination ─── */
