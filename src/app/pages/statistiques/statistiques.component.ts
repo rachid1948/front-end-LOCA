@@ -274,7 +274,7 @@ export class StatistiquesComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.bindFilters();
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
   }
 
   private render(): void {

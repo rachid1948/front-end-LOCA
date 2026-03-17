@@ -373,6 +373,6 @@ export class MaintenanceComponent implements AfterViewInit {
       if ((e.target as Element).id === 'mnt-add-modal') this.closeAddModal();
     });
 
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
   }
 }

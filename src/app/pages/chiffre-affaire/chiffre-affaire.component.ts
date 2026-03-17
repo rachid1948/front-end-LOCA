@@ -75,13 +75,16 @@ export class ChiffreAffaireComponent implements AfterViewInit {
   loadAll() {
     this.operationService.getAll().subscribe({
       next: (data: any[]) => {
-        this.operations = data.map(op => {
+        this.operations = data
+          .filter(op => op.statut !== 'EN_COURS')  // ignorer les locations ouvertes (pas de total connu)
+          .map(op => {
           const d1 = new Date(op.dateDepart);
           const d2 = new Date(op.dateRetour);
           const jours = Math.max(1, Math.ceil((d2.getTime() - d1.getTime()) / 86400000));
           const total = op.prixTTC ?? 0;
-          const prixJour = jours > 0 ? Math.round(total / jours) : total;
-          const paye = op.statut === 'PAYE' ? total : 0;
+          const prixJour = op.prixJour ? Number(op.prixJour) : (jours > 0 ? Math.round(total / jours) : total);
+          const avance = Number(op.avance ?? 0);
+          const paye = op.statut === 'PAYE' ? total : avance;
           return {
             marque: `${op.vehiculeMarque ?? ''} ${op.vehiculeModele ?? ''}`.trim(),
             matricule: op.vehiculeMatricule ?? op.matricule ?? '',
@@ -295,6 +298,6 @@ export class ChiffreAffaireComponent implements AfterViewInit {
     (window as any)['caMonth']  = () => this.applyMonth();
     (window as any)['caDates']  = () => this.applyDates();
     (window as any)['caReset']  = () => this.reset();
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
   }
 }

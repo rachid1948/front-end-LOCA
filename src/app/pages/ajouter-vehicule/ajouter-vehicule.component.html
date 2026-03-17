@@ -42,7 +42,7 @@
                 <option>Mercedes</option>
                 <option>BMW</option>
                 <option>Audi</option>
-                <option>Tesla</option>
+                <option>BYD</option>
                 <option>Renault</option>
                 <option>Dacia</option>
                 <option>Peugeot</option>
@@ -54,7 +54,7 @@
                 <option>Citroën</option>
                 <option>Seat</option>
                 <option>Opel</option>
-                <option>Autre</option>
+                <option>-</option>
               </select>
               <svg class="select-arrow" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </div>
@@ -71,9 +71,19 @@
           <div class="field">
             <label>
               <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="20" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="13" r="1" fill="currentColor"/><circle cx="16" cy="13" r="1" fill="currentColor"/></svg>
-              Matricule / Immatriculation
+              Matricule WW <span style="color:#ff6b35;margin-left:4px;">*</span>
+              <span style="font-size:11px;font-weight:400;color:rgba(0,245,255,0.4);margin-left:6px;">(provisoire, obligatoire)</span>
             </label>
-            <input type="text" id="matricule" placeholder="ex: 123-A-45" style="font-family: 'Courier New', monospace; letter-spacing: 2px; text-transform: uppercase;"/>
+            <input type="text" id="matriculeWW" placeholder="ex: WW-001-25" style="font-family: 'Courier New', monospace; letter-spacing: 2px; text-transform: uppercase;"/>
+          </div>
+
+          <div class="field">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="20" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="13" r="1" fill="#00f5ff"/><circle cx="16" cy="13" r="1" fill="#00f5ff"/></svg>
+              Matricule officiel
+              <span style="font-size:11px;font-weight:400;color:rgba(0,245,255,0.4);margin-left:6px;">(optionnel, à renseigner après immatriculation)</span>
+            </label>
+            <input type="text" id="matricule" placeholder="ex: 62631-A-11" style="font-family: 'Courier New', monospace; letter-spacing: 2px; text-transform: uppercase;"/>
           </div>
 
           <div class="field">

@@ -138,6 +138,6 @@ export class VidangeComponent implements AfterViewInit {
       if ((e.target as Element).id === 'vidange-modal') this.closeModal();
     });
 
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
   }
 }

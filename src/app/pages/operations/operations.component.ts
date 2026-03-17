@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { SidebarComponent } from '../../shared/sidebar.component';
 import { OperationService } from '../../core/services/operation.service';
 
@@ -39,7 +40,8 @@ export class OperationsComponent implements AfterViewInit {
 
   operations: Operation[] = [];
 
-  constructor(private operationService: OperationService) {}
+  constructor(private operationService: OperationService, private router: Router) {}
+
 
   private isoToFr(iso: string): string {
     if (!iso) return '';
@@ -174,9 +176,10 @@ export class OperationsComponent implements AfterViewInit {
             ${isOpen ? `<button class="btn-cloture" onclick="opsCloture(${idx})" title="Clôturer la location">
               <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/></svg>
               Clôturer
-            </button>` : `<button class="btn-edit" onclick="opsEdit(${idx})" title="Modifier">
+            </button>` : ''}
+            <button class="btn-edit" onclick="opsEdit(${idx})" title="Modifier">
               <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>`}
+            </button>
             <button class="btn-del" onclick="opsDel(${idx})" title="Supprimer">
               <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9 6V4h6v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
@@ -227,11 +230,10 @@ export class OperationsComponent implements AfterViewInit {
     if (!dateRetour) { this.showToast('Veuillez saisir la date de retour.'); return; }
 
     this.operationService.cloture(op.id, dateRetour).subscribe({
-      next: (updated) => {
-        this.operations[this.editingIndex] = this.mapFromBackend(updated);
+      next: () => {
         this.closeClotureModal();
-        this.renderTable();
         this.showToast('Location clôturée avec succès !');
+        this.loadAll();
       },
       error: (err) => this.showToast(err.error?.message || 'Erreur lors de la clôture.')
     });
@@ -251,7 +253,7 @@ export class OperationsComponent implements AfterViewInit {
     (document.getElementById('ed-matricule') as HTMLInputElement).value = op.matricule;
     (document.getElementById('ed-client') as HTMLInputElement).value = op.client;
 
-    const toISO = (d: string) => { const [dd, mm, yy] = d.split('/'); return `${yy}-${mm}-${dd}`; };
+    const toISO = (d: string) => { if (!d) return ''; const [dd, mm, yy] = d.split('/'); return `${yy}-${mm}-${dd}`; };
     (document.getElementById('ed-aller') as HTMLInputElement).value = toISO(op.dateAller);
     (document.getElementById('ed-retour') as HTMLInputElement).value = toISO(op.dateRetour);
     (document.getElementById('ed-prix') as HTMLInputElement).value = op.prixJour.toString();
@@ -275,24 +277,23 @@ export class OperationsComponent implements AfterViewInit {
     const paye          = avanceActuelle + complement;
     const client        = (document.getElementById('ed-client') as HTMLInputElement).value;
 
-    const d1 = new Date(dateAllerISO), d2 = new Date(dateRetourISO);
-    const jours   = Math.max(1, Math.ceil((d2.getTime() - d1.getTime()) / 86400000));
-    const prixTTC  = jours * prixJour;
-    const statut   = paye >= prixTTC ? 'PAYE' : 'IMPAYE';
-
-    const body = { client, vehiculeId: op.vehiculeId, dateDepart: dateAllerISO, dateRetour: dateRetourISO, prixJour, avance: paye, statut };
+    let body: any;
+    if (op.statut === 'EN_COURS' && !dateRetourISO) {
+      // Location ouverte — conserver EN_COURS, pas de calcul de total
+      body = { client, vehiculeId: op.vehiculeId, dateDepart: dateAllerISO, prixJour, avance: paye };
+    } else {
+      const d1 = new Date(dateAllerISO), d2 = new Date(dateRetourISO);
+      const jours   = Math.max(1, Math.ceil((d2.getTime() - d1.getTime()) / 86400000));
+      const prixTTC  = jours * prixJour;
+      const statut   = paye >= prixTTC ? 'PAYE' : 'IMPAYE';
+      body = { client, vehiculeId: op.vehiculeId, dateDepart: dateAllerISO, dateRetour: dateRetourISO, prixJour, avance: paye, statut };
+    }
 
     this.operationService.update(op.id, body).subscribe({
       next: () => {
-        this.operations[this.editingIndex] = {
-          ...op, client,
-          dateAller: toFR(dateAllerISO),
-          dateRetour: toFR(dateRetourISO),
-          jours, prixJour, total: prixTTC, avance: paye, paye, statut
-        };
         this.closeModal();
-        this.renderTable();
         this.showToast('Opération modifiée avec succès');
+        this.loadAll();
       },
       error: () => this.showToast('Erreur lors de la modification.')
     });
@@ -304,10 +305,8 @@ export class OperationsComponent implements AfterViewInit {
     if (!confirm('Supprimer cette opération ?')) return;
     this.operationService.delete(op.id).subscribe({
       next: () => {
-        this.operations.splice(globalIdx, 1);
-        if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
-        this.renderTable();
         this.showToast('Opération supprimée');
+        this.loadAll();
       },
       error: () => this.showToast('Erreur lors de la suppression.')
     });

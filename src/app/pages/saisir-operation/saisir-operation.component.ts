@@ -63,7 +63,7 @@ export class SaisirOperationComponent implements AfterViewInit {
         }
         select.innerHTML = '<option value="" disabled selected>Sélectionner une voiture</option>' +
           vehicules.map(v =>
-            `<option value="${v.id}">${v.marque} ${v.modele} — ${v.matricule}</option>`
+            `<option value="${v.id}" data-circulation="${v.dateCirculation || ''}">${v.marque} ${v.modele} — ${v.matricule || v.matriculeWW || ''}</option>`
           ).join('');
       },
       error: () => {
@@ -141,6 +141,18 @@ export class SaisirOperationComponent implements AfterViewInit {
     if (!client || !vehiculeId || !dateDepart || isNaN(prixJour) || prixJour <= 0) {
       this.showToast('Veuillez remplir tous les champs obligatoires.', 'error');
       return;
+    }
+
+    // Validation : date de départ ne doit pas être avant la date de mise en circulation
+    const selectEl = document.getElementById('vehiculeId') as HTMLSelectElement;
+    const selectedOption = selectEl?.selectedOptions[0];
+    const dateCirculation = selectedOption?.dataset['circulation'];
+    if (dateCirculation) {
+      if (new Date(dateDepart) < new Date(dateCirculation)) {
+        const formatted = new Date(dateCirculation).toLocaleDateString('fr-FR');
+        this.showToast(`La date de départ ne peut pas être avant le ${formatted} (date de mise en circulation du véhicule).`, 'error');
+        return;
+      }
     }
     if (!retourInconnu) {
       if (!dateRetour) {

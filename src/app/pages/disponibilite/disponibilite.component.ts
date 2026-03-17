@@ -31,24 +31,40 @@ export class DisponibiliteComponent implements AfterViewInit {
     }).subscribe({
       next: ({ vehicules, operations }) => {
         this.voitures = vehicules.map(v => {
-          // Opération active aujourd'hui pour ce véhicule
-          const activeOp = operations.find(op => {
+          // Toutes les ops actives ou futures pour ce véhicule
+          const opsVehicule = operations.filter(op => {
             if (op.vehiculeId !== v.id) return false;
-            const depart = new Date(op.dateDepart);
+            // Location ouverte (EN_COURS) → toujours active
+            if (op.statut === 'EN_COURS' || !op.dateRetour) return true;
             const retour = new Date(op.dateRetour);
-            depart.setHours(0, 0, 0, 0);
             retour.setHours(0, 0, 0, 0);
-            return depart <= today && retour > today;
+            // Garder les ops dont la date de retour est aujourd'hui ou future
+            return retour >= today;
           });
+
+          // Parmi ces ops, prendre celle avec la date de retour la plus lointaine
+          let retourLe: Date | null = null;
+          let isOpen = false;
+          for (const op of opsVehicule) {
+            if (op.statut === 'EN_COURS' || !op.dateRetour) {
+              isOpen = true; // retour inconnu → priorité absolue
+              retourLe = null;
+              break;
+            }
+            const d = new Date(op.dateRetour);
+            d.setHours(0, 0, 0, 0);
+            if (!retourLe || d > retourLe) retourLe = d;
+          }
 
           return {
             id: v.id,
             nom: `${v.marque ?? ''} ${v.modele ?? ''}`.trim(),
             immat: v.matricule ?? '',
             statut: v.statut === 'MAINTENANCE' ? 'maintenance'
-                  : activeOp                   ? 'louee'
+                  : (opsVehicule.length > 0)   ? 'louee'
                   : 'disponible',
-            retourLe: activeOp ? new Date(activeOp.dateRetour) : null as Date | null,
+            retourLe: isOpen ? null : retourLe,
+            isOpen,
           };
         });
         this.renderAll();
@@ -69,7 +85,7 @@ export class DisponibiliteComponent implements AfterViewInit {
       searchInput.addEventListener('change', () => this.renderSearch(searchInput.value));
     }
 
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
   }
 
   joursRestants(date: Date | null): number {
@@ -102,6 +118,9 @@ export class DisponibiliteComponent implements AfterViewInit {
     const sc = this.statutClass(v);
     const sl = this.statutLabel(v);
     const retour = this.formatDate(v.retourLe);
+    const enCoursBadge = (v.statut === 'louee' && v.isOpen)
+      ? `<span class="badge encours">En cours</span>`
+      : '';
     return `
       <tr>
         <td>
@@ -114,7 +133,7 @@ export class DisponibiliteComponent implements AfterViewInit {
           </div>
         </td>
         <td>${retour}</td>
-        <td><span class="badge ${sc}">${sl}</span></td>
+        <td class="statut-cell"><span class="badge ${sc}">${sl}</span>${enCoursBadge}</td>
       </tr>`;
   }
 
@@ -126,9 +145,11 @@ export class DisponibiliteComponent implements AfterViewInit {
 
     // Appliquer le filtre
     if (filter !== 'all') {
-      // Le filtre 'rented' inclut aussi 'soon' (retour ≤ 7 jours)
-      if (filter === 'rented') {
-        list = list.filter(v => this.statutClass(v) === 'rented' || this.statutClass(v) === 'soon');
+      if (filter === 'encours') {
+        list = list.filter(v => v.statut === 'louee' && v.isOpen);
+      } else if (filter === 'rented') {
+        // Le filtre 'rented' inclut aussi 'soon' mais exclut EN_COURS
+        list = list.filter(v => (this.statutClass(v) === 'rented' || this.statutClass(v) === 'soon') && !v.isOpen);
       } else {
         list = list.filter(v => this.statutClass(v) === filter);
       }
@@ -153,7 +174,8 @@ export class DisponibiliteComponent implements AfterViewInit {
 
   setActiveFilter(filter: string): void {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    const btn = document.getElementById(`filter-${filter === 'all' ? 'all' : filter}`);
+    const id = filter === 'all' ? 'all' : filter === 'maintenance' ? 'maint' : filter;
+    const btn = document.getElementById(`filter-${id}`);
     if (btn) btn.classList.add('active');
   }
 

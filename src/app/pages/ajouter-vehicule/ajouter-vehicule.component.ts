@@ -32,29 +32,31 @@ export class AjouterVehiculeComponent implements AfterViewInit {
   private submit(): void {
     const get = (id: string) => (document.getElementById(id) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)?.value?.trim() || '';
 
-    const marque    = get('marque');
-    const modele    = get('modele');
-    const matricule = get('matricule');
-    const statut    = get('statut') || 'DISPONIBLE';
-    const remarques = get('remarques');
+    const marque       = get('marque');
+    const modele       = get('modele');
+    const matriculeWW  = get('matriculeWW');
+    const matricule    = get('matricule');   // optionnel
+    const statut       = get('statut') || 'DISPONIBLE';
+    const remarques    = get('remarques');
+    const dateCirculation = get('dateCirculation') || null;
 
-    // Parse couleur and annee from remarques or defaults
-    const annee = new Date().getFullYear();
-
-    if (!modele || !matricule) {
-      this.showToast('Modèle et matricule sont requis.', 'error');
+    if (!modele || !matriculeWW) {
+      this.showToast('Modèle et matricule WW sont obligatoires.', 'error');
       return;
     }
 
-    const body = {
+    const body: any = {
       marque: marque || 'Autre',
       modele,
-      matricule: matricule.toUpperCase(),
+      matriculeWW: matriculeWW.toUpperCase(),
       couleur: remarques || 'Non spécifié',
-      annee,
+      dateCirculation,
       carburant: 'Essence',
       statut: statut.toUpperCase()
     };
+    if (matricule) {
+      body.matricule = matricule.toUpperCase();
+    }
 
     const btn = document.querySelector('.btn-submit') as HTMLButtonElement;
     if (btn) btn.disabled = true;

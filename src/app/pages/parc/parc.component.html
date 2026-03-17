@@ -47,3 +47,48 @@
 
   </main>
 </div>
+
+<!-- Modal Modifier Véhicule -->
+<div class="modal-overlay" id="parc-edit-modal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+      Modifier le véhicule
+    </div>
+
+    <div class="modal-field">
+      <label>MARQUE</label>
+      <input type="text" id="pe-marque" placeholder="ex: Renault"/>
+    </div>
+    <div class="modal-field">
+      <label>MODÈLE</label>
+      <input type="text" id="pe-modele" placeholder="ex: Clio"/>
+    </div>
+    <div class="modal-field">
+      <label>MATRICULE WW <span style="color:#ff6b35;">*</span></label>
+      <input type="text" id="pe-matriculeWW" placeholder="ex: WW-001-25" style="font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase;"/>
+      <div class="field-hint">Matricule provisoire — toujours conservé en base</div>
+    </div>
+    <div class="modal-field">
+      <label>MATRICULE OFFICIEL <span style="color:rgba(0,245,255,0.4);">(optionnel)</span></label>
+      <input type="text" id="pe-matricule" placeholder="ex: 62631-A-11" style="font-family:'Courier New',monospace;letter-spacing:2px;text-transform:uppercase;"/>
+      <div class="field-hint">Renseigner quand le véhicule est immatriculé définitivement</div>
+    </div>
+    <div class="modal-field">
+      <label>DATE DE MISE EN CIRCULATION</label>
+      <input type="date" id="pe-dateCirculation"/>
+    </div>
+    <div class="modal-field">
+      <label>STATUT</label>
+      <select id="pe-statut">
+        <option value="DISPONIBLE">Disponible</option>
+        <option value="MAINTENANCE">En maintenance</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="parcCloseEdit()">Annuler</button>
+      <button class="modal-save" onclick="parcSaveEdit()">Enregistrer</button>
+    </div>
+  </div>
+</div>

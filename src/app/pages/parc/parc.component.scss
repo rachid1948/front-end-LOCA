@@ -218,6 +218,14 @@
     font-family: 'Courier New', monospace;
     width: fit-content;
   }
+  .car-annee {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.38);
+    margin-top: 2px;
+  }
 }
 
 // ---- Badges statut ----
@@ -231,6 +239,27 @@
   &.maintenance { background: rgba(160,210,255,0.05); color: rgba(160,210,255,0.7); border: 1px solid rgba(160,210,255,0.15); }
 }
 
-.car-actions{padding:0 12px 12px;}
-.btn-delete-car{display:flex;align-items:center;gap:6px;width:100%;padding:7px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#f87171;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;justify-content:center;}
+.car-actions{padding:0 12px 12px; display:flex; gap:6px;}
+.btn-delete-car{display:flex;align-items:center;gap:6px;flex:1;padding:7px 12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-radius:8px;color:#f87171;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;justify-content:center;}
 .btn-delete-car:hover{background:rgba(239,68,68,.18);border-color:rgba(239,68,68,.5);color:#fca5a5;}
+.btn-edit-car{display:flex;align-items:center;gap:6px;flex:1;padding:7px 12px;background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.2);border-radius:8px;color:#00f5ff;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;justify-content:center;}
+.btn-edit-car:hover{background:rgba(0,245,255,.14);border-color:rgba(0,245,255,.45);}
+
+// Badge provisoire WW
+.badge-ww{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;color:#ff8c42;background:rgba(255,140,66,.1);border:1px solid rgba(255,140,66,.3);border-radius:5px;padding:2px 7px;font-family:'Courier New',monospace;}
+
+// Modal modifier
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{background:#080f20;border:1px solid rgba(0,245,255,.15);border-radius:20px;padding:32px;width:480px;max-width:95vw;}
+.modal-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.modal-field{margin-bottom:16px;}
+.modal-field label{display:block;font-size:12px;font-weight:600;color:rgba(0,245,255,.6);margin-bottom:6px;letter-spacing:.5px;}
+.modal-field input,.modal-field select{width:100%;background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.12);border-radius:10px;padding:10px 14px;color:#fff;font-size:13px;outline:none;transition:border-color .2s;}
+.modal-field input:focus,.modal-field select:focus{border-color:rgba(0,245,255,.4);}
+.modal-field input::placeholder{color:rgba(160,210,255,.3);}
+.modal-field .field-hint{font-size:11px;color:rgba(0,245,255,.35);margin-top:4px;}
+.modal-actions{display:flex;gap:10px;margin-top:24px;justify-content:flex-end;}
+.modal-cancel{padding:9px 20px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(160,210,255,.7);font-size:13px;cursor:pointer;}
+.modal-save{padding:9px 20px;border-radius:10px;background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.3);color:#00f5ff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.modal-save:hover{background:rgba(0,245,255,.2);}

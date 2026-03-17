@@ -374,7 +374,7 @@ export class VisiteTechniqueComponent implements AfterViewInit {
       if ((e.target as Element).id === 'vt-modal') this.closeModal();
     });
 
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
     this.loadVehicules();
   }
 }

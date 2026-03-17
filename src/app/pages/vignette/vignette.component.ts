@@ -37,7 +37,7 @@ export class VignetteComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.bindGlobals();
-    this.loadAll();
+    setTimeout(() => this.loadAll(), 0);
     this.vehiculeService.getAll().subscribe({ next: v => this.vehicles = v });
   }
 
